@@ -23,13 +23,11 @@ public class BookManager {
 	public boolean insertBook(Book book) throws BookException {
 		isFull();									// 배열이 가득 찼으면
 		
-		if (searchBook(book.getBookNum()) != null) {	// 이미 존재하는 책 번호이면
-			throw new BookException("[Error] 입력오류: 이미 존재하는 책 번호입니다");
+		if (searchBook(book.getBookNum()) == null) {	// 책의 번호가 존재하지 않으면
+			bookArray[baIndex++] = book;
+			return true;
 		}
-		
-		
-		bookArray[baIndex++] = book;
-		return true;
+		throw new BookException("[Error] 입력오류: 이미 존재하는 책 번호입니다");
 	}
 	
 	public Book searchBook(int bookNum) throws BookException {
