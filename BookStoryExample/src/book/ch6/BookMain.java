@@ -4,8 +4,11 @@ public class BookMain {
 	public static void main(String[] args) {
 		
 		BookCUI cui = new BookCUI(2);
-		cui.cuiStart();
-		
+		try {
+			cui.cuiStart();
+		} catch (BookException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 }

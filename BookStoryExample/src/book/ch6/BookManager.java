@@ -38,13 +38,17 @@ public class BookManager {
 				return bookArray[i];
 			}
 		}
-		return null;
+		throw new BookException("[Error] 검색오류: 입력한 책 번호와 일치하는 책이 없습니다");
 	}
 	
-	public Book[] getBookList() {
+	public Book[] getBookList() throws BookException {
 		Book[] bookList = new Book[baIndex];
 		for (int i = 0; i < baIndex; i++) {
 			bookList[i] = bookArray[i];
+		}
+		
+		if (bookList.length == 0) {
+			throw new BookException("[Error] 리스트오류: 빈 리스트");
 		}
 		return bookList;
 	}
@@ -93,7 +97,7 @@ public class BookManager {
 		else if (typeNum == 1) {
 			return getBookList();
 		}
-		throw new BookException("[BookException] 리스트 생성 에러");
+		throw new BookException("[Error] 리스트오류: 리스트 생성 에러");
 	}
 	
 	public String checkBookType(String title) throws BookException {

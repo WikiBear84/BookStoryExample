@@ -16,7 +16,7 @@ public class BookCUI {
 		bm = new BookManager(bookArraySize);
 	}
 	
-	public void cuiStart() {
+	public void cuiStart() throws BookException {
 		while(true) {
 			System.out.println("===== 도서관리 프로그램 =====");
 			System.out.println("1. 도서 입력");
@@ -56,7 +56,7 @@ public class BookCUI {
 		}
 	}
 	
-	public void insertBook() {
+	public void insertBook() throws BookException {
 		System.out.println("===== 1. 도서 입력 =====");
 		
 		System.out.println("책 번호: ");
@@ -80,27 +80,21 @@ public class BookCUI {
 		Book b = null;
 		
 		// 책의 제목의 앞글자를 분석해서 만들 객체의 종류를 선택한다.	
-		try {
-			String type = bm.checkBookType(title);
-			if (type != null && type.equals("[PB]")) {
-				System.out.println("PaperBook Data:");
-				String pbData = input.nextLine();
-				b = new PaperBook(bookNum, title, content, pbData);
-			}
-			else if (type != null && type.equals("[AB]")) {
-				System.out.println("AudioBook Data:");
-				String abData = input.nextLine();
-				b = new AudioBook(bookNum, title, content, abData);
-			}
-			bm.insertBook(b);
+		String type = bm.checkBookType(title);
+		if (type != null && type.equals("[PB]")) {
+			System.out.println("PaperBook Data:");
+			String pbData = input.nextLine();
+			b = new PaperBook(bookNum, title, content, pbData);
 		}
-		catch (BookException e) {
-			//e.printStackTrace();
-			System.out.println(e.getMessage());
+		else if (type != null && type.equals("[AB]")) {
+			System.out.println("AudioBook Data:");
+			String abData = input.nextLine();
+			b = new AudioBook(bookNum, title, content, abData);
 		}
+		bm.insertBook(b);
 	}
 	
-	public void printBook() {
+	public void printBook() throws BookException {
 		System.out.println("===== 2. 도서 출력 =====");
 		System.out.println("1. 전체 출력");
 		System.out.println("2. PaperBook 출력");
@@ -111,12 +105,7 @@ public class BookCUI {
 			
 		Book[] bookList = null;
 		
-		try {
-			bookList = bm.getBookListByType(typeNum);
-		}
-		catch (BookException e) {
-			System.out.println(e.getMessage());
-		}
+		bookList = bm.getBookListByType(typeNum);
 		
 		if(bookList != null) {
 			for(int i = 0; i < bookList.length; i++) {
@@ -125,19 +114,13 @@ public class BookCUI {
 		}
 	}
 	
-	public void searchBook() {
+	public void searchBook() throws BookException {
 		System.out.println("===== 3. 도서 검색(책 번호) =====");
 		System.out.println("검색할 책 번호: ");
 		int bookNum = input.nextInt();
 		
-		Book sBook;
-		try {
-			sBook = bm.searchBook(bookNum);
-		} catch (BookException e) {
-			//e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
-		
+		Book sBook = null;
+		sBook = bm.searchBook(bookNum);
 	}
 	
 }
